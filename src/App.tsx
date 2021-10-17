@@ -16,14 +16,17 @@ function App() {
     ]);
 
     function removeTask(id: string) {
-        let filteredTasks = tasks.filter(t => t.id != id);
-        setTasks(filteredTasks);
+/*        let filteredTasks = tasks.filter(t => t.id != id);
+        setTasks(filteredTasks);*/
+        setTasks([...tasks.filter(t => t.id != id)])
     }
 
     function addTask(title: string) {
-        let task = {id: v1(), title: title, isDone: false};
+/*        let task = {id: v1(), title: title, isDone: false};
         let newTasks = [task, ...tasks];
-        setTasks(newTasks);
+        setTasks(newTasks);*/
+        setTasks([{id: v1(), title: title, isDone: false},...tasks])
+
     }
 
     let [filter, setFilter] = useState<FilterValuesType>("all");
@@ -43,7 +46,7 @@ function App() {
 
     function changeCheckBoxStatus(Id: string, isDone: boolean) {
 
-        //Функция find (callback) вызывается для каждого эл-та в tasks,
+/*        //Функция find (callback) вызывается для каждого эл-та в tasks,
         //который будет приходить как параметр t
         //Если функция возвращает true, то нужная task будет найдена и
         //запишится в переменную task. Функция говорит, я в tasks ищу task
@@ -57,11 +60,11 @@ function App() {
         }
         //Мы поменяли tasks, надо реакту сказать, что одна из tasks в массиве изменилась (считаем, что изменился весь массив)
         // Надо сделать копию, чтобы реакт понял let copy = []
-        /*let copy = [...tasks]
-        setTasks(copy); можно заменить на*/
+        /!*let copy = [...tasks]
+        setTasks(copy); можно заменить на*!/
 
-        setTasks([...tasks])
-
+        setTasks([...tasks])*/
+setTasks([...tasks.map(m=>m.id ===Id ? {...m, isDone:isDone}:m)])
     }
 
 
