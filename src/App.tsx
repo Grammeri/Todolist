@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from './Todolist';
-import { v1 } from 'uuid';
+import {v1} from 'uuid';
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -14,22 +14,31 @@ function App() {
         {id: v1(), title: "Rest API", isDone: false},
         {id: v1(), title: "GraphQL", isDone: false},
     ]);
+    let [filter, setFilter] = useState<FilterValuesType>("all");
+
 
     function removeTask(id: string) {
 /*        let filteredTasks = tasks.filter(t => t.id != id);
         setTasks(filteredTasks);*/
-        setTasks([...tasks.filter(t => t.id != id)])
+        setTasks([...tasks].filter(t=>t.id !==id))
     }
 
     function addTask(title: string) {
-/*        let task = {id: v1(), title: title, isDone: false};
+        let task = {id: v1(), title: title, isDone: false};
         let newTasks = [task, ...tasks];
-        setTasks(newTasks);*/
+        setTasks(newTasks);
         setTasks([{id: v1(), title: title, isDone: false},...tasks])
-
     }
 
-    let [filter, setFilter] = useState<FilterValuesType>("all");
+    function changeStatus(taskId: string, isDone: boolean) {
+/*        let task = tasks.find(t => t.id === taskId);
+        if (task) {
+            task.isDone = isDone;
+        }
+        setTasks([...tasks]);*/
+        setTasks([...tasks.map(t => t.id === taskId ? {...t,isDone:isDone}:t)])
+        }
+
 
     let tasksForTodolist = tasks;
 
@@ -44,29 +53,6 @@ function App() {
         setFilter(value);
     }
 
-    function changeCheckBoxStatus(Id: string, isDone: boolean) {
-
-/*        //Функция find (callback) вызывается для каждого эл-та в tasks,
-        //который будет приходить как параметр t
-        //Если функция возвращает true, то нужная task будет найдена и
-        //запишится в переменную task. Функция говорит, я в tasks ищу task
-        //у которой id равна taskId (Id task, которую надо поменять:
-        // (поставить/убрать галочку), как найду запишу в let task и перестану искать.
-        let task = tasks.find(t => t.id === Id)
-
-        if (task) {//если task существует, тогда
-            task.isDone = isDone; // вводим 2-й параметр isDone: boolean, чтобы указать на какое значение поменять
-            //т.е. на то, которое придет в параметре
-        }
-        //Мы поменяли tasks, надо реакту сказать, что одна из tasks в массиве изменилась (считаем, что изменился весь массив)
-        // Надо сделать копию, чтобы реакт понял let copy = []
-        /!*let copy = [...tasks]
-        setTasks(copy); можно заменить на*!/
-
-        setTasks([...tasks])*/
-setTasks([...tasks.map(m=>m.id ===Id ? {...m, isDone:isDone}:m)])
-    }
-
 
     return (
         <div className="App">
@@ -75,12 +61,11 @@ setTasks([...tasks.map(m=>m.id ===Id ? {...m, isDone:isDone}:m)])
                       removeTask={removeTask}
                       changeFilter={changeFilter}
                       addTask={addTask}
-                      changeCheckBoxStatus={changeCheckBoxStatus}
+                      changeTaskStatus={changeStatus}
                       filter={filter}
             />
         </div>
     );
 }
-
 
 export default App;
