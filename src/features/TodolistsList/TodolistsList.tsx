@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppRootStateType } from '../../app/store'
+import { RootState } from '../../app/store'
 import {
     addTodolistTC,
     changeTodolistFilterAC,
@@ -16,15 +16,16 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { AddItemForm } from '../../components/AddItemForm/AddItemForm'
 import { Todolist } from './Todolist/Todolist'
+import {useAppDispatch} from "../../app/hooks";
 
 type PropsType = {
     demo?: boolean
 }
 
 export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
-    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
-    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-    const dispatch = useDispatch()
+    const todolists = useSelector<RootState, Array<TodolistDomainType>>(state => state.todolists)
+    const tasks = useSelector<RootState, TasksStateType>(state => state.tasks)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         const thunk = fetchTodolistsTC()
