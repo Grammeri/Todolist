@@ -36,6 +36,15 @@ export const todolistsAPI = {
     }
 }
 
+export const authAPI = {
+    login(payload:LoginType) {
+        return instance.post<LoginType, AxiosResponse<ResponseType<{ userId: number }>>>("/auth/login", payload)
+    },
+    me(){
+        return instance.get<ResponseType<UserType>>("/auth/me")
+    }
+}
+
 // types
 export type TodolistType = {
     id: string
@@ -46,7 +55,6 @@ export type TodolistType = {
 export type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
-    fieldsErrors: Array<string>
     data: D
 }
 
@@ -64,6 +72,12 @@ export enum TaskPriorities {
     Hi = 2,
     Urgently = 3,
     Later = 4
+}
+
+export enum Result_code {
+    OK = 0,
+    ERROR = 1,
+    CAPTURE = 10
 }
 
 export type TaskType = {
@@ -91,3 +105,17 @@ type GetTasksResponse = {
     totalCount: number
     items: TaskType[]
 }
+
+export type LoginType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+    capture?:string
+}
+
+export type UserType = {
+    id: string,
+    email: string,
+    login: string
+}
+

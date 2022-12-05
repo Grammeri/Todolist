@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../app/store'
+import React, {useCallback, useEffect} from 'react'
+import {useSelector} from 'react-redux'
+import {RootState} from '../../app/store'
 import {
     addTodolistTC,
     changeTodolistFilterAC,
@@ -10,24 +10,24 @@ import {
     removeTodolistTC,
     TodolistDomainType
 } from './todolists-reducer'
-import { addTaskTC, removeTaskTC, TasksStateType, updateTaskTC } from './tasks-reducer'
-import { TaskStatuses } from '../../api/todolists-api'
+import {addTaskTC, removeTaskTC, TasksStateType, updateTaskTC} from './tasks-reducer'
+import {TaskStatuses} from '../../api/todolists-api'
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { AddItemForm } from '../../components/AddItemForm/AddItemForm'
-import { Todolist } from './Todolist/Todolist'
-import {useAppDispatch} from "../../app/hooks";
+import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
+import {Todolist} from './Todolist/Todolist'
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {Navigate} from "react-router-dom";
 
-type PropsType = {
-    demo?: boolean
-}
 
-export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
+export const TodolistsList = () => {
     const todolists = useSelector<RootState, Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useSelector<RootState, TasksStateType>(state => state.tasks)
     const dispatch = useAppDispatch()
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     useEffect(() => {
+        if(!isLoggedIn) return
         const thunk = fetchTodolistsTC()
         dispatch(thunk)
     }, [])
@@ -72,6 +72,9 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         dispatch(thunk)
     }, [dispatch])
 
+    if (!isLoggedIn){
+        return <Navigate to={"login"}/>
+    }
 
     return <>
         <Grid container style={{padding: '20px'}}>
