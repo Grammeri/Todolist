@@ -16,7 +16,7 @@ import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
 import {Login} from "../features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "./hooks";
-import {meTC} from "../features/Login/auth-reducer";
+import {logoutTC, meTC} from "../features/Login/auth-reducer";
 import {CircularProgress} from "@mui/material";
 
 
@@ -24,10 +24,15 @@ function App() {
     const status = useSelector<RootState, RequestStatusType>((state) => state.app.status)
     const dispatch = useAppDispatch()
     const isInitialized = useAppSelector(state => state.app.isInitialized)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
-    useEffect(()=>{
+    const handleLogOut = () => {
+        dispatch(logoutTC())
+    }
+
+    useEffect(() => {
         dispatch(meTC())
-    },[])
+    }, [])
 
     if (!isInitialized) {
         return <div
@@ -48,16 +53,16 @@ function App() {
                     <Typography variant="h6">
                         News
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {isLoggedIn && <Button color="inherit" onClick={handleLogOut}>Log out</Button>}
                 </Toolbar>
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>
             <Container fixed>
                 <Routes>
-                    <Route path="/" element = {<TodolistsList/>}/>
-                    <Route path="login" element = {<Login/>}/>
-                    <Route path="401" element = {<h1 style={{textAlign: "center"}}>404: Page not found</h1>}/>
-                    <Route path="*" element = {<Navigate to = "401"/>}/>
+                    <Route path="/" element={<TodolistsList/>}/>
+                    <Route path="login" element={<Login/>}/>
+                    <Route path="401" element={<h1 style={{textAlign: "center"}}>404: Page not found</h1>}/>
+                    <Route path="*" element={<Navigate to="401"/>}/>
                 </Routes>
 
             </Container>
