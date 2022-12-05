@@ -3,7 +3,7 @@ import './App.css'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 import {useSelector} from 'react-redux'
 import {RootState} from './store'
-import {RequestStatusType} from './app-reducer'
+import {initializeAppTC, RequestStatusType} from './app-reducer'
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -16,7 +16,7 @@ import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
 import {Login} from "../features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "./hooks";
-import {logoutTC, meTC} from "../features/Login/auth-reducer";
+import {logoutTC} from "../features/Login/auth-reducer";
 import {CircularProgress} from "@mui/material";
 
 
@@ -31,7 +31,7 @@ function App() {
     }
 
     useEffect(() => {
-        dispatch(meTC())
+        dispatch(initializeAppTC())
     }, [])
 
     if (!isInitialized) {
