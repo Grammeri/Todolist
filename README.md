@@ -1,13 +1,13 @@
 **Technologies stack:**
-ReactJS
-TypeScript
-Redux Toolkit
-RestAPI
-Axios
-Redux-Thunk
-Material UI
-Yup
-Unit testing
+ReactJS,
+TypeScript,
+Redux Toolkit,
+RestAPI,
+Axios,
+Redux-Thunk,
+Material UI,
+Yup,
+Unit testing,
 Storybook
 
 **Features**
